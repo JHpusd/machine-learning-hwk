@@ -1,5 +1,5 @@
 import time
-
+print("\ngradient descent parameter fitting")
 def rss(b0,b1):
     return (b0)**2 + (b0+b1-1)**2 + (b0+2*b1-4)**2
 

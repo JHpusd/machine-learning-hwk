@@ -1,6 +1,6 @@
 import numpy as np
 import time
-
+print("\npsuedoinverse")
 def run():
     y = [[0],[1],[4],[9]]
     data = [[0,1],[1,1],[2,1],[3,1]]

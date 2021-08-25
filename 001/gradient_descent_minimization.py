@@ -1,5 +1,5 @@
 import time
-
+print("\ngradient descent minimization")
 d = 0.1
 a = 0.001
 f = lambda x,y: 1 + 2*(x**2) + 3*(y**2)
@@ -17,4 +17,4 @@ for _ in range(10):
     run(1,2)
 end = time.time()
 
-print((end-start)/10)
+print("python: ", (end-start)/10)

@@ -22,4 +22,4 @@ for i in 1:10
 end
 stop = time_ns()
 
-print((stop-start)/10^10)
+print("julia: ",(stop-start)/10^10)
