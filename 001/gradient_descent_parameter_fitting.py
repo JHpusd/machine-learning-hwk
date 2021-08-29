@@ -10,7 +10,8 @@ def run(b0,b1):
         b0 -= 0.001*rss_b0
         b1 -= 0.001*rss_b1
     return (b0,b1)
-
+print("by hand answer: (-0.00398,1.996)")
+print("calculated answer: ",run(0,2))
 start = time.time()
 for _ in range(10):
     run(0,2)

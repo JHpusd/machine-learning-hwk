@@ -11,7 +11,8 @@ def run(x,y):
         x -= a*f_x
         y -= a*f_y
     return (x,y)
-
+print("by hand answer: (0.9938, 1.981)")
+print("calculated answer: ",run(1,2))
 start = time.time()
 for _ in range(10):
     run(1,2)

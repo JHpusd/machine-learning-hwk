@@ -8,7 +8,9 @@ def run():
     square = np.matmul(transpose, data)
     inverse = np.linalg.inv(square)
     answer = np.matmul(inverse, np.matmul(transpose, y))
-
+    return answer
+print("by hand answer: [[3],[-1]]")
+print("calculated answer: ",run())
 start = time.time()
 for _ in range(10):
     run()
