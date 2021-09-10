@@ -3,9 +3,10 @@ import math as m
 class DecisionTree():
     def __init__(self, point_dict):
         self.point_dict = point_dict
-        self.entropy = self.entropy()
+        self.entropy = self.get_entropy()
         self.parent = None
-        self.branches = []
+        self.branches = None
+        self.best_split = None
     
     def get_all_coords(self, point_dict=None):
         result = []
@@ -15,7 +16,7 @@ class DecisionTree():
             result += point_dict[key]
         return result
 
-    def entropy(self, point_dict=None):
+    def get_entropy(self, point_dict=None):
         entropy = 0
         if point_dict == None:
             point_dict = self.point_dict
@@ -47,14 +48,15 @@ class DecisionTree():
         return midpoints
 
     def get_splits(self, point_dict=None):
-        result = {}
+        result = []
         if point_dict == None:
             point_dict = self.point_dict
         all_coords = self.get_all_coords(point_dict)
         for i in range(len(all_coords[0])):
             unique = list(set([coord[i] for coord in all_coords]))
             midpoints = self.get_midpoints(unique)
-            result[i] = midpoints
+            for midpoint in midpoints:
+                result.append((i, midpoint))
         return result
     
     def split(self, split_tuple, point_dict=None):
@@ -69,7 +71,37 @@ class DecisionTree():
         greater_dict = self.remove_from_dict(point_dict, lesser)
         lesser_dict = self.remove_from_dict(point_dict, greater)
         if check:
-            self.branches = [DecisionTree(greater_dict), DecisionTree(lesser_dict)]
-        return [DecisionTree(greater_dict), DecisionTree(lesser_dict)]
-
+            child_1 = DecisionTree(greater_dict)
+            child_2 = DecisionTree(lesser_dict)
+            child_1.parent = self
+            child_2.parent = self
+            self.branches = [child_1, child_2]
+        return [greater_dict, lesser_dict]
     
+    def weighted_entropy(self, point_dict_list):
+        weighted_entropy = 0
+        num_points = sum([len(self.get_all_coords(point_dict)) for point_dict in point_dict_list])
+        for point_dict in point_dict_list:
+            entropy = self.get_entropy(point_dict)
+            num_point_ratio = len(self.get_all_coords(point_dict))/num_points
+            weighted_entropy += entropy * num_point_ratio
+        return weighted_entropy
+    
+    def get_best_split(self, point_dict=None):
+        check = False
+        if point_dict == None:
+            check = True
+            point_dict = self.point_dict
+        all_splits = self.get_splits(point_dict)
+        best_split = all_splits[0]
+        best_entropy = self.weighted_entropy(self.split(best_split, point_dict))
+        for split in all_splits:
+            branches = self.split(split, point_dict)
+            weighted_entropy = self.weighted_entropy(branches)
+            if weighted_entropy < best_entropy:
+                best_split = split
+                best_entropy = weighted_entropy
+        if check:
+            self.best_split = best_split
+        return best_split
+
