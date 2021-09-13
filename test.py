@@ -1,8 +1,12 @@
-def add(input_dict, obj):
-    input_dict[obj] = 5
+class Bababooey():
+    def __init__(self, x):
+        self.x = x
+    
+    def add_one(self, a=None):
+        if a == None:
+            a = self
+        print(a.x + 1)
+        return
 
-test_1 = {'a': 1, 'b':2, 'c':3}
-test_2 = test_1.copy()
-add(test_2, 'd')
-print(test_1)
-print(test_2)
+test = {'a':1, 'b':2, 'c':3}
+print(list(test.keys()))

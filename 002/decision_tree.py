@@ -104,4 +104,46 @@ class DecisionTree():
         if check:
             self.best_split = best_split
         return best_split
+    
+    def fit(self, d_tree=None):
+        if d_tree == None:
+            d_tree = self
+        if len(d_tree.branches) != 0:
+            return
+        d_tree.get_best_split()
+        d_tree.split(d_tree.best_split)
+        branches = [branch for branch in d_tree.branches if branch.entropy != 0]
+        next_branches = []
+        while True:
+            for branch in branches:
+                branch.get_best_split()
+                branch.split(branch.best_split)
+                next_branches += [b for b in branch.branches if b.entropy != 0]
+            branches = next_branches
+            next_branches = []
+            if len(branches) == 0:
+                break
+    
+    def get_type(self, d_tree=None):
+        if d_tree == None:
+            d_tree = self
+        if d_tree.entropy != 0:
+            print("node is not pure")
+            print(d_tree.point_dict)
+            return None
+        key = list(d_tree.point_dict)
+        return key[0]
+
+    def predict(self, point, d_tree=None):
+        if d_tree == None:
+            d_tree = self
+        d_tree.fit()
+        while d_tree.entropy != 0:
+            i = d_tree.best_split[0]
+            val = d_tree.best_split[1]
+            if point[i] >= val:
+                d_tree = d_tree.branches[0]
+            elif point[i] < val:
+                d_tree = d_tree.branches[1]
+        return d_tree.get_type()
 
