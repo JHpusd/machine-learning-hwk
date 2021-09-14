@@ -5,7 +5,7 @@ class DecisionTree():
         self.point_dict = point_dict
         self.entropy = self.get_entropy()
         self.parent = None
-        self.branches = None
+        self.branches = []
         self.best_split = None
     
     def get_all_coords(self, point_dict=None):
@@ -131,8 +131,8 @@ class DecisionTree():
             print("node is not pure")
             print(d_tree.point_dict)
             return None
-        key = list(d_tree.point_dict)
-        return key[0]
+        target = [key for key in d_tree.point_dict.keys() if len(d_tree.point_dict[key]) != 0]
+        return target[0]
 
     def predict(self, point, d_tree=None):
         if d_tree == None:
