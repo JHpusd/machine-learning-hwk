@@ -27,6 +27,6 @@ function proj_distance(A,x)
     return distance(projection, x)
 end
 
-A = [0 2; 1 0; 0 1]
-x = [0; 1; 5]
+A = [1 1; -1 1; -1 0]
+x = [4; -6; -2]
 print(proj(A,x))
