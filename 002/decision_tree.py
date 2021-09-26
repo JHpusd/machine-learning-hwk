@@ -33,11 +33,7 @@ class DecisionTree():
             vals = [vals]
         for key in copy_dict:
             items = list(copy_dict[key])
-            new_items = []
-            for item in items:
-                if item in vals:
-                    continue
-                new_items.append(item)
+            new_items = [item for item in items if item not in vals]
             copy_dict[key] = new_items
         return copy_dict
     
