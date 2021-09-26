@@ -7,15 +7,17 @@ def ncr(n, r):
     denom = reduce(op.mul, range(1, r+1), 1)
     return numer // denom  # or / in Python 2
 
-def hyp_geometric(N, K, n, x):
-    valid_vals = range(max(0,n+K-N), min(n,K)+1)
-    total = 0
+def nb(r,p,x):
     if type(x) != list:
         x = [x]
+    total = 0
     for val in x:
-        if val not in valid_vals:
+        if val < r:
             continue
-        total += (ncr(K,val) * ncr(N-K,n-val))/ncr(N,n)
+        choose = ncr(val-1, r-1)
+        p_1 = (1-p)**(val-r)
+        p_2 = p**r
+        total += choose * p_1 * p_2
     return total
 
-print(hyp_geometric(32,17,12,[0,1,2,3,4,5,6,7,8,9,10]))
+print(nb(9,0.7,13))
