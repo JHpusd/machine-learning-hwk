@@ -1,12 +1,14 @@
 import math as m
+import random
 
 class DecisionTree():
-    def __init__(self, point_dict):
+    def __init__(self, point_dict, min_size_to_split):
         self.point_dict = point_dict
         self.entropy = self.get_entropy()
         self.parent = None
         self.branches = []
         self.best_split = None
+        self.min_size = min_size_to_split
     
     def get_all_coords(self, point_dict=None):
         result = []
@@ -60,6 +62,8 @@ class DecisionTree():
         if point_dict == None:
             check = True
             point_dict = self.point_dict
+        if len(point_dict.get_all_coords) <= point_dict.min_size:
+            return None
         index = split_tuple[0]
         val = split_tuple[1]
         greater = [coord for coord in self.get_all_coords(point_dict) if coord[index]>=val]
@@ -124,17 +128,28 @@ class DecisionTree():
         if d_tree == None:
             d_tree = self
         if d_tree.entropy != 0:
-            print("node is not pure")
-            print(d_tree.point_dict)
-            return None
+            lengths = [(key,len(d_tree.point_dict[key])) for key in d_tree.point_dict]
+            largest_len = max([pair[1] for pair in lengths])
+            new_lengths = [pair for pair in lengths if pair[1]==largest_len]
+            if len(new_lengths) > 1:
+                r = random.randint(0,len(new_lengths)-1)
+                return new_lengths[r][0]
+            return new_lengths[0][0]
         target = [key for key in d_tree.point_dict.keys() if len(d_tree.point_dict[key]) != 0]
         return target[0]
+    
+    def node_stop_split(self, d_tree=None):
+        if d_tree == None:
+            d_tree = self
+        if len(d_tree.get_all_coords()) <= d_tree.min_size:
+            return True
+        return False
 
     def predict(self, point, d_tree=None):
         if d_tree == None:
             d_tree = self
         d_tree.fit()
-        while d_tree.entropy != 0:
+        while d_tree.entropy != 0 or d_tree.node_stop_split():
             i = d_tree.best_split[0]
             val = d_tree.best_split[1]
             if point[i] >= val:

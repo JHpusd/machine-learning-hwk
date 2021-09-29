@@ -18,4 +18,4 @@ def hyp_geometric(N, K, n, x):
         total += (ncr(K,val) * ncr(N-K,n-val))/ncr(N,n)
     return total
 
-print(hyp_geometric(32,17,12,[0,1,2,3,4,5,6,7,8,9,10]))
+print(hyp_geometric(17,11,9,[4,5]))
