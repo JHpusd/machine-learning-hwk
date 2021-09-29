@@ -47,6 +47,6 @@ dt.fit()
 assert dt.predict((1,6)) == 'x'
 assert dt.predict((2,6)) == 'x'
 assert dt.predict((1,2)) == 'x' # random seeded
-assert dt.predict((2,2)) == 'x' # random 
+assert dt.predict((2,2)) == 'x' # random seeded
 for branch in dt.branches:
     assert len(branch.branches) == 0
