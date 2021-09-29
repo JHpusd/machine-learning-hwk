@@ -62,8 +62,6 @@ class DecisionTree():
         if point_dict == None:
             check = True
             point_dict = self.point_dict
-        if len(point_dict.get_all_coords) <= point_dict.min_size:
-            return None
         index = split_tuple[0]
         val = split_tuple[1]
         greater = [coord for coord in self.get_all_coords(point_dict) if coord[index]>=val]
@@ -71,8 +69,8 @@ class DecisionTree():
         greater_dict = self.remove_from_dict(point_dict, lesser)
         lesser_dict = self.remove_from_dict(point_dict, greater)
         if check:
-            child_1 = DecisionTree(greater_dict)
-            child_2 = DecisionTree(lesser_dict)
+            child_1 = DecisionTree(greater_dict,self.min_size)
+            child_2 = DecisionTree(lesser_dict,self.min_size)
             child_1.parent = self
             child_2.parent = self
             self.branches = [child_1, child_2]
@@ -108,7 +106,7 @@ class DecisionTree():
     def fit(self, d_tree=None):
         if d_tree == None:
             d_tree = self
-        if len(d_tree.branches) != 0:
+        if len(d_tree.branches) != 0 or len(d_tree.get_all_coords()) <= d_tree.min_size:
             return
         d_tree.get_best_split()
         d_tree.split(d_tree.best_split)
@@ -116,6 +114,8 @@ class DecisionTree():
         next_branches = []
         while True:
             for branch in branches:
+                if len(branch.get_all_coords()) <= branch.min_size:
+                    continue
                 branch.get_best_split()
                 branch.split(branch.best_split)
                 next_branches += [b for b in branch.branches if b.entropy != 0]
@@ -141,7 +141,7 @@ class DecisionTree():
     def node_stop_split(self, d_tree=None):
         if d_tree == None:
             d_tree = self
-        if len(d_tree.get_all_coords()) <= d_tree.min_size:
+        if len(d_tree.get_all_coords()) < d_tree.min_size:
             return True
         return False
 
