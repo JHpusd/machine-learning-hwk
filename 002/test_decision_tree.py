@@ -29,6 +29,24 @@ print("prediction for (5,2):", dt.predict((5,2)))
 '''
 init_points = {'x':[(1,7),(2,7),(3,7),(3,8),(3,9),(7,1)], 'o':[(1,9),(5,1),(5,2),(5,3),(6,3),(7,3)]}
 dt = DecisionTree(init_points, 7)
-print(dt.get_best_split())
 dt.fit()
-print(dt.branches[0].best_split)
+
+assert dt.predict((1,6)) == 'x'
+assert dt.predict((2,8)) == 'x'
+assert dt.predict((3,10)) == 'x'
+assert dt.predict((5,5)) == 'o'
+assert dt.predict((6,2)) == 'o'
+assert dt.predict((7,2)) == 'o'
+assert len(dt.branches[0].branches) == 0
+assert len(dt.branches[1].branches) == 0
+
+init_points = {'x':[(1,3),(1,5),(2,4),(2,5)], 'o':[(1,4),(2,3)]}
+dt = DecisionTree(init_points, 5)
+dt.fit()
+
+assert dt.predict((1,6)) == 'x'
+assert dt.predict((2,6)) == 'x'
+assert dt.predict((1,2)) == 'x' # random seeded
+assert dt.predict((2,2)) == 'x' # random 
+for branch in dt.branches:
+    assert len(branch.branches) == 0

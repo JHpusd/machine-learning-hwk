@@ -1,5 +1,6 @@
 import math as m
 import random
+random.seed(1)
 
 class DecisionTree():
     def __init__(self, point_dict, min_size_to_split):
@@ -137,19 +138,12 @@ class DecisionTree():
             return new_lengths[0][0]
         target = [key for key in d_tree.point_dict.keys() if len(d_tree.point_dict[key]) != 0]
         return target[0]
-    
-    def node_stop_split(self, d_tree=None):
-        if d_tree == None:
-            d_tree = self
-        if len(d_tree.get_all_coords()) < d_tree.min_size:
-            return True
-        return False
 
     def predict(self, point, d_tree=None):
         if d_tree == None:
             d_tree = self
         d_tree.fit()
-        while d_tree.entropy != 0 or d_tree.node_stop_split():
+        while d_tree.entropy != 0 and len(d_tree.get_all_coords()) > d_tree.min_size:
             i = d_tree.best_split[0]
             val = d_tree.best_split[1]
             if point[i] >= val:
