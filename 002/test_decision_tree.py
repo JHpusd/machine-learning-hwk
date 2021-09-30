@@ -26,7 +26,7 @@ print("prediction for (1,1):", dt.predict((1,1)))
 print("prediction for (2,3):", dt.predict((2,3)))
 print("prediction for (4,4):", dt.predict((4,4)))
 print("prediction for (5,2):", dt.predict((5,2)))
-'''
+
 init_points = {'x':[(1,7),(2,7),(3,7),(3,8),(3,9),(7,1)], 'o':[(1,9),(5,1),(5,2),(5,3),(6,3),(7,3)]}
 dt = DecisionTree(init_points, 7)
 dt.fit()
@@ -50,3 +50,8 @@ assert dt.predict((1,2)) == 'x' # random seeded
 assert dt.predict((2,2)) == 'x' # random seeded
 for branch in dt.branches:
     assert len(branch.branches) == 0
+'''
+init_points = {'x':[(0,1),(0,1),(0,2),(1,1),(1,2),(1,2)], 'o':[(0,2),(1,1),(1,1),(1,2)]}
+dt= DecisionTree(init_points, 1)
+
+dt.split(get_best_split())

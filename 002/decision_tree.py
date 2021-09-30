@@ -115,7 +115,7 @@ class DecisionTree():
         next_branches = []
         while True:
             for branch in branches:
-                if len(branch.get_all_coords()) <= branch.min_size:
+                if len(branch.get_all_coords()) <= branch.min_size or len(set(branch.get_all_coords()))==1:
                     continue
                 branch.get_best_split()
                 branch.split(branch.best_split)
@@ -143,7 +143,7 @@ class DecisionTree():
         if d_tree == None:
             d_tree = self
         d_tree.fit()
-        while d_tree.entropy != 0 and len(d_tree.get_all_coords()) > d_tree.min_size:
+        while d_tree.entropy != 0 and len(d_tree.get_all_coords()) > d_tree.min_size and len(set(d_tree.get_all_coords()))!=1:
             i = d_tree.best_split[0]
             val = d_tree.best_split[1]
             if point[i] >= val:
